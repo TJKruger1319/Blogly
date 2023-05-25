@@ -10,3 +10,7 @@ app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
 db.create_all()
+
+from flask_debugtoolbar import DebugToolbarExtension
+app.config['SECRET_KEY'] = "SECRET!"
+debug = DebugToolbarExtension(app)
