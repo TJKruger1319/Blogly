@@ -6,7 +6,7 @@ db = SQLAlchemy()
 def connect_db(app):
     db.app = app
     db.init_app(app)
-
+# Changed comment
 
 class User(db.Model):
     '''User'''
