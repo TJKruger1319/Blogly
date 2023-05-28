@@ -11,13 +11,15 @@ app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = "SECRET!"
 debug = DebugToolbarExtension(app)
 
+app.app_context().push()
+
 connect_db(app)
 
 @app.route("/")
 def list_users():
-    # users = User.query.all()
-    # return render_template("userlist.html", users=users)
-    '''TODO'''
+    users = User.query.all()
+    return render_template("userlist.html", users=users)
+
 
 @app.route("/users")
 def show_users():
