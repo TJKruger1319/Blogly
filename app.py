@@ -42,7 +42,7 @@ def add_user():
 
     return redirect('/users')
 
-app.route("/users/<int:user_id>")
+@app.route("/users/<int:user_id>")
 def show_user(user_id):
     user = User.query.get_or_404(user_id)
-    return render_template()
+    return render_template("user.html", user=user)
