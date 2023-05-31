@@ -1,5 +1,6 @@
 """Models for Blogly."""
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
 
 db = SQLAlchemy()
 
@@ -10,6 +11,7 @@ def connect_db(app):
 
 
 class User(db.Model):
+    """Users"""
 
     __tablename__ = "users"
 
@@ -20,4 +22,23 @@ class User(db.Model):
                            nullable=False)
     last_name = db.Column(db.String(30),
                           nullable=False)
-    image_url = db.Column(db.String(50000))
+    image_url = db.Column(db.Text)
+
+class Post(db.Model):
+    """Posts"""
+
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    title = db.Column(db.String(60),
+                      nullable=False)
+    content = db.Column(db.Text,
+                        nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id'))
+    users = db.relationship('User', backref='posts')
+    

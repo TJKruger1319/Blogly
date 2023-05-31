@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 
-{% block title %}Add User{% endblock %}
+{% block title %}{{user.first_name}} {{user.last_name}}{% endblock %}
 
 {% block content %}
 
@@ -9,4 +9,11 @@
 <form action="{{ '/users/%s/edit'%user.id }}" method="GET"><button>Edit</button></form>
 <form action="{{ '/users/%s/delete'%user.id }}" method="POST"><button>Delete</button></form>
 
+<h1>Posts</h1>
+<ul>
+    {% for post in posts %}
+    <li><a href="/">{{post.title}}</a></li>
+    {% endfor %}
+</ul>
+<form action="{{ '/users/%s/posts/new'%user.id }}" method="GET"><button>Add Post</button></form>
 {% endblock%}
