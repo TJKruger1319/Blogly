@@ -89,3 +89,36 @@ def new_post(user_id):
     db.session.commit()
 
     return redirect(f"/users/{user_id}")
+
+@app.route("/posts/<int:post_id>")
+def show_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get_or_404(post.user_id)
+    
+    return render_template("post.html", post=post, user=user)
+
+@app.route("/posts/<int:post_id>/edit")
+def show_edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get_or_404(post.user_id)
+    
+    return render_template("editpost.html", post=post, user=user)
+
+@app.route("/posts/<int:post_id>/edit", methods=['POST'])
+def edit_post(post_id):
+    title = request.form['title']
+    content = request.form['content']
+
+    p = Post.query.filter_by(id=post_id)
+    p.update({'title': title, 'content': content})
+    db.session.commit()
+    return redirect(f"/posts/{post_id}")
+
+@app.route("/posts/<int:post_id>/delete", methods=['POST'])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    user = User.query.get_or_404(post.user_id)
+
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(f"/users/{user.id}")
