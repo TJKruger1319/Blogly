@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -122,3 +122,29 @@ def delete_post(post_id):
     db.session.delete(post)
     db.session.commit()
     return redirect(f"/users/{user.id}")
+
+@app.route("/tags")
+def show_tags():
+    tags = Tag.query.all()
+    return render_template("tags.html", tags=tags)
+
+@app.route("/tags/new")
+def new_tag_form():
+    return render_template("newtag.html")
+
+@app.route("/tags/new", methods=['POST'])
+def new_tag():
+    name = request.form['name']
+
+    tag = Tag(name=name)
+    db.session.add(tag)
+    db.session.commit()
+
+    return redirect("/tags")
+
+@app.route("/tags/<int:tag_id>")
+def tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+    post_id = tag.connect()
+    print(post_id)
+    return render_template("tag.html", tag=tag)
