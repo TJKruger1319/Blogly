@@ -145,6 +145,6 @@ def new_tag():
 @app.route("/tags/<int:tag_id>")
 def tag(tag_id):
     tag = Tag.query.get_or_404(tag_id)
-    post_id = tag.connect()
+    post_id = tag.connect
     print(post_id)
     return render_template("tag.html", tag=tag)
