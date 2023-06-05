@@ -41,4 +41,33 @@ class Post(db.Model):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'))
     users = db.relationship('User', backref='posts')
-    
+
+    connect = db.relationship('PostTag', backref='post')
+
+
+class Tag(db.Model):
+     """Tags"""
+
+     __tablename__ = "tags"
+
+     id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+     name = db.Column(db.Text,
+                      nullable=False)
+     connect = db.relationship('PostTag', backref='tag')
+     
+class PostTag(db.Model):
+     """Mapping a tag to a post"""
+
+     __tablename__ = "posttag"
+
+
+     post_id = db.Column(db.Integer, 
+                       db.ForeignKey('posts.id'),
+                       primary_key=True)
+     tag_id = db.Column(db.Integer, 
+                       db.ForeignKey("tags.id"),
+                       primary_key=True)
+     
+

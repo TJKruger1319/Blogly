@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+
+{% block title %}{{tag.name}}{% endblock %}
+
+{% block content %}
+
+<h1>{{tag.name}}</h1>
+
+<ul>
+    {% for post in posts %}
+    <li><a href="{{ '/posts/%s'%post.id }}">{{post.title}}</a></li>
+    {% endfor %}
+</ul>
+
+<form action="{{ '/tags/%s/edit'%tag.id }}" method="GET">
+    <button>Edit Tag</button>
+</form>
+
+<form action="{{ '/tags/%s/delete'%tag.id }}" method="POST"><button>Delete</button></form>
+
+{% endblock%}
