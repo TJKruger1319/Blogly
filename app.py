@@ -146,5 +146,4 @@ def new_tag():
 def tag(tag_id):
     tag = Tag.query.get_or_404(tag_id)
     post_id = tag.connect
-    print(post_id)
     return render_template("tag.html", tag=tag)

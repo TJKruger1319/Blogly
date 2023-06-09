@@ -5,9 +5,8 @@ from sqlalchemy.sql import func
 db = SQLAlchemy()
 
 def connect_db(app):
-    with app.app_context():
-            db.app = app
-            db.init_app(app)
+        db.app = app
+        db.init_app(app)
 
 
 class User(db.Model):
@@ -62,12 +61,11 @@ class PostTag(db.Model):
 
      __tablename__ = "posttag"
 
-
      post_id = db.Column(db.Integer, 
                        db.ForeignKey('posts.id'),
                        primary_key=True)
      tag_id = db.Column(db.Integer, 
-                       db.ForeignKey("tags.id"),
+                       db.ForeignKey('tags.id'),
                        primary_key=True)
      
 
