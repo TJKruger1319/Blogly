@@ -14,6 +14,12 @@
     <label for="content">
         <input type="text" name="content" value={{post.content}}>
     </label><br><br>
+    <p>Tags:</p>
+    {% for tag in tags %}
+    <label for="tags">
+        {{tag.name}}: <input type="checkbox" name="tags" value={{tag.id}}>
+    </label>
+    {% endfor %} <br>
     <button>Finish</button>
 </form>
 <form action="{{ '/users/%s'%user.id }}" method="GET"><button>Cancel</button></form>
