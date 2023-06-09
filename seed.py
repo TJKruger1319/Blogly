@@ -5,7 +5,7 @@ from app import app
 db.drop_all()
 db.create_all()
 
-#PostTag.query.delete()
+PostTag.query.delete()
 User.query.delete()
 Post.query.delete()
 Tag.query.delete()
@@ -19,8 +19,10 @@ db.session.add(Tyler)
 db.session.add(Cam)
 
 post = Post(title="First Post", content="I hate McDonalds", user_id=3)
+post2 = Post(title="Second Post", content="I still hate McDonalds", user_id=3)
 
 db.session.add(post)
+db.session.add(post2)
 
 tag = Tag(name="First")
 tag2 = Tag(name="Second")
@@ -30,8 +32,10 @@ db.session.add(tag2)
 
 posttag = PostTag(post_id=1, tag_id=1)
 posttag2 = PostTag(post_id=1, tag_id=2)
+posttag3 = PostTag(post_id=2, tag_id=1)
 
 db.session.add(posttag)
 db.session.add(posttag2)
+db.session.add(posttag3)
 
 db.session.commit()

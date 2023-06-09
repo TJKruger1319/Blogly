@@ -77,15 +77,23 @@ def delete_user(user_id):
 @app.route("/users/<int:user_id>/posts/new")
 def show_post_form(user_id):
     user = User.query.get_or_404(user_id)
-    return render_template("newpost.html", user=user)
+    tags =Tag.query.all()
+    return render_template("newpost.html", user=user, tags=tags)
 
 @app.route("/users/<int:user_id>/posts/new", methods=['POST'])
 def new_post(user_id):
     title = request.form['title']
     content = request.form['content']
+    tags = request.form.getlist('tags')
 
     post = Post(title=title, content=content, user_id=user_id)
     db.session.add(post)
+    db.session.commit()
+    
+    for tag in tags:
+        new_tag = Tag.query.get_or_404(tag)
+        posttag = PostTag(post_id=post.id, tag_id=new_tag.id)
+        db.session.add(posttag)
     db.session.commit()
 
     return redirect(f"/users/{user_id}")
@@ -94,8 +102,15 @@ def new_post(user_id):
 def show_post(post_id):
     post = Post.query.get_or_404(post_id)
     user = User.query.get_or_404(post.user_id)
+    tag = post.connect
+    tags = []
+    for i in range(len(tag)):
+        temp_tag = post.connect[i]
+        t_id = temp_tag.tag_id
+        t = Tag.query.get_or_404(t_id)
+        tags.append(t)
     
-    return render_template("post.html", post=post, user=user)
+    return render_template("post.html", post=post, user=user, tags=tags)
 
 @app.route("/posts/<int:post_id>/edit")
 def show_edit_post(post_id):
@@ -145,5 +160,11 @@ def new_tag():
 @app.route("/tags/<int:tag_id>")
 def tag(tag_id):
     tag = Tag.query.get_or_404(tag_id)
-    post_id = tag.connect
-    return render_template("tag.html", tag=tag)
+    post = tag.connect
+    posts = []
+    for i in range(len(post)):
+        temp_post = tag.connect[i]
+        p_id = temp_post.post_id
+        p = Post.query.get_or_404(p_id)
+        posts.append(p)
+    return render_template("tag.html", tag=tag, posts=posts)
